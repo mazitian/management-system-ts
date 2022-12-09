@@ -8,6 +8,7 @@ import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
+import { mapMenusToRoutes } from '@/utils/map-menu'
 
 interface ILoginState {
   token: string
@@ -42,6 +43,9 @@ const useLoginStore = defineStore('login', {
       // 4.进行本地缓存
       localCache.setCache('userInfo', userInfo)
       localCache.setCache('userMenus', userMenus)
+
+      const routes = mapMenusToRoutes(userMenus)
+      routes.forEach((route) => router.addRoute('main', route))
 
       // 5.页面跳转(main页面)
       router.push('/main')
